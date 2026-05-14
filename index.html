@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You, Anuuu 🌸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --blush: #ffd6e0;
+      --lavender: #e8d5f5;
+      --cream: #fff8f0;
+      --rose: #c9837a;
+      --deep-rose: #a05c5c;
+      --text-light: rgba(255,255,255,0.95);
+      --text-glow: rgba(255, 200, 210, 0.8);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #1a0a0f;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 99999;
+      font-size: 16px;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+      user-select: none;
+    }
+
+    /* Floating hearts ambient layer */
+    .ambient {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .ambient-heart {
+      position: absolute;
+      bottom: -40px;
+      font-size: 14px;
+      opacity: 0;
+      animation: floatUp linear infinite;
+      color: rgba(255, 182, 193, 0.5);
+    }
+
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-110vh) rotate(360deg); }
+    }
+
+    /* Sections */
+    .section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      scroll-snap-align: start;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .section-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: transform 8s ease;
+      transform: scale(1.05);
+    }
+
+    .section:hover .section-bg {
+      transform: scale(1.0);
+    }
+
+    /* Photo rotation fixes */
+    .rotate-90  { transform: scale(1.05) rotate(90deg)  scale(1.42); }
+    .rotate-90:hover { transform: scale(1.0) rotate(90deg) scale(1.42); }
+    .rotate-180 { transform: scale(1.05) rotate(180deg); }
+    .rotate-270 { transform: scale(1.05) rotate(270deg) scale(1.42); }
+
+    /* Gradient overlay */
+    .section-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(20, 5, 10, 0.88) 0%,
+        rgba(20, 5, 10, 0.4) 40%,
+        rgba(20, 5, 10, 0.1) 70%,
+        transparent 100%
+      );
+    }
+
+    /* Hero section special overlay */
+    .hero-overlay {
+      background: linear-gradient(
+        160deg,
+        rgba(20, 5, 10, 0.5) 0%,
+        rgba(100, 30, 60, 0.3) 50%,
+        rgba(20, 5, 10, 0.75) 100%
+      );
+    }
+
+    /* Content card */
+    .section-content {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      padding: 0 32px 60px;
+      max-width: 680px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .section-content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px;
+      color: var(--rose);
+      opacity: 0.5;
+      line-height: 0.4;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .section-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.5;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+      letter-spacing: 0.01em;
+    }
+
+    .section-sub {
+      margin-top: 18px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(0.75rem, 2vw, 0.9rem);
+      font-weight: 300;
+      color: rgba(255, 214, 224, 0.75);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .heart-divider {
+      margin: 14px auto;
+      color: var(--rose);
+      font-size: 14px;
+      letter-spacing: 8px;
+      opacity: 0.7;
+    }
+
+    /* ---- HERO ---- */
+    #hero {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 32px;
+      opacity: 0;
+      animation: heroReveal 2s ease 0.5s forwards;
+    }
+
+    @keyframes heroReveal {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 200, 214, 0.8);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.1;
+      text-shadow: 0 4px 40px rgba(200, 80, 100, 0.4);
+    }
+
+    .hero-title span {
+      color: var(--blush);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      font-style: italic;
+      color: rgba(255, 230, 235, 0.85);
+      font-weight: 300;
+    }
+
+    .scroll-hint {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bounce 2s ease infinite;
+    }
+
+    .scroll-hint::after {
+      content: '↓';
+      font-size: 1.2rem;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); opacity: 0.5; }
+      50% { transform: translateY(6px); opacity: 0.9; }
+    }
+
+    /* ---- FINAL SECTION ---- */
+    #final .section-content {
+      padding-bottom: 80px;
+    }
+
+    .final-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+      font-style: italic;
+      color: rgba(255, 200, 210, 0.7);
+      margin-top: 20px;
+      letter-spacing: 0.1em;
+    }
+
+    /* ---- LOVE BUTTON ---- */
+    .love-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 1000;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c9837a, #e8a0a0);
+      border: none;
+      cursor: pointer;
+      font-size: 22px;
+      box-shadow: 0 4px 20px rgba(201, 131, 122, 0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .love-btn:hover {
+      transform: scale(1.15);
+      box-shadow: 0 6px 30px rgba(201, 131, 122, 0.7);
+    }
+
+    /* ---- POPUP ---- */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(15, 5, 10, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .popup-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .popup-card {
+      background: linear-gradient(135deg, rgba(255,214,224,0.15), rgba(232,213,245,0.1));
+      border: 1px solid rgba(255,214,224,0.25);
+      border-radius: 24px;
+      padding: 48px 40px;
+      max-width: 360px;
+      width: 90%;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transform: scale(0.9);
+      transition: transform 0.4s ease;
+    }
+
+    .popup-overlay.show .popup-card {
+      transform: scale(1);
+    }
+
+    .popup-emoji { font-size: 48px; margin-bottom: 16px; display: block; }
+
+    .popup-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: #fff;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .popup-close {
+      margin-top: 24px;
+      background: linear-gradient(135deg, var(--rose), #e8a0a0);
+      border: none;
+      color: white;
+      padding: 10px 28px;
+      border-radius: 50px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .popup-close:hover { transform: scale(1.05); }
+
+    /* ---- BURST HEARTS ---- */
+    .burst-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 3000;
+      font-size: 18px;
+      animation: burstAnim 1.2s ease forwards;
+    }
+
+    @keyframes burstAnim {
+      0%   { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.3); }
+    }
+
+    /* ---- SPARKLE ---- */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9;
+      font-size: 10px;
+      color: rgba(255, 200, 210, 0.4);
+      animation: sparkleFade 3s ease infinite;
+    }
+
+    @keyframes sparkleFade {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ---- SCROLLBAR ---- */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #1a0a0f; }
+    ::-webkit-scrollbar-thumb { background: var(--rose); border-radius: 4px; }
+
+    /* ---- SECTION NUMBER ---- */
+    .section-num {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.15em;
+      z-index: 5;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 480px) {
+      .section-content { padding: 0 20px 50px; }
+      .hero-content { padding: 20px; }
+      .love-btn { bottom: 20px; right: 20px; }
+      .quote-mark { font-size: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor">♥</div>
+
+  <!-- Ambient floating hearts -->
+  <div class="ambient" id="ambient"></div>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="section" id="hero">
+    <div class="section-bg" style="background-image: url('images/photo1.jpg');"></div>
+    <div class="section-overlay hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">a little something — just for you</p>
+      <h1 class="hero-title">For You,<br/><span>Anuuu</span> 🌸</h1>
+      <p class="hero-sub">A reminder of how deeply, endlessly loved you are.</p>
+      <div class="scroll-hint">scroll</div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 2 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo11.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">01</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">You are the strongest person I know — even on the days you forget it.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">my brave girl</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo17.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">02</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">You won that trophy. You win every room you walk into — you just don't notice.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">winner, always</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo4.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">03</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">Even when you doubt yourself — I see everything you are, and it takes my breath away.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">seen & adored</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo15.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">04</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">Your smile can fix the worst days. Mine, especially.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">my sunshine</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo6.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">05</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">Periods, bad days, tired nights — you still show up. That is not weakness. That is everything.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">resilient & real</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 7 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo16.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">06</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">You think you have no skills. I think you just haven't seen yourself the way I do — endlessly, effortlessly capable.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">you are more than enough</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 8 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo5.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">07</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">Some people are art. You are my favorite kind — the kind I want to keep coming back to.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">my favorite person</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 9 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo12.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">08</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">In every version of this life, in every lifetime — I'd still choose you. Every single time.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">always you</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 10 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo18.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">09</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">Your eyes hold entire worlds. I keep getting lost in them — and I never want to find my way out.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">those eyes ✨</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 11 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo7.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">10</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">Rest. Heal. Take all the time you need. I am not going anywhere — I promise.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">safe with me</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 12 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo3.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">11</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">The way you laugh — I want to collect that sound and keep it with me forever.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">your laugh is home</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 13 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo9.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">12</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">You think it's ordinary. I think it's extraordinary — because it's you doing it.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">everything you do</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 14 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo13.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">13</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">You are not just loved. You are completely, hopelessly, endlessly adored.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">deeply adored</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 15 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo14.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">14</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">I don't know what I did to deserve you. But I am grateful — every single day — that somehow, I got you.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">grateful, always</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 16 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo2.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">15</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">On your hardest days, please remember — someone thinks the world of you. That someone is me.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">on your bad days too</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 17 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo10.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">16</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">Being with you feels like the warmest, safest place in the world. You are my home.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">you are home</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 18 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo19.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">17</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">You carry so much and still stay soft. That is the rarest kind of strength, Anju.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">beautifully strong</p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 19 ==================== -->
+  <section class="section">
+    <div class="section-bg" style="background-image: url('images/photo8.jpg');"></div>
+    <div class="section-overlay"></div>
+    <span class="section-num">18</span>
+    <div class="section-content">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">The little things you do — your expressions, your silliness, your warmth — I notice all of it. All of it is beautiful.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">I notice everything</p>
+    </div>
+  </section>
+
+  <!-- ==================== FINAL SECTION ==================== -->
+  <section class="section" id="final">
+    <div class="section-bg" style="background-image: url('images/photo20.jpg');"></div>
+    <div class="section-overlay"></div>
+    <div class="section-content" style="padding-bottom: 80px;">
+      <span class="quote-mark">"</span>
+      <p class="section-quote">From the very beginning... to forever.<br/>You are my person. Always.</p>
+      <div class="heart-divider">♥ ♥ ♥</div>
+      <p class="section-sub">always & forever</p>
+      <p class="final-name">— with all my love, Harsh 💕</p>
+    </div>
+  </section>
+
+  <!-- Love button -->
+  <button class="love-btn" id="loveBtn" title="A secret for you 🌸">🌸</button>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-card">
+      <span class="popup-emoji">💕</span>
+      <p class="popup-text">You are loved more than words can ever say.<br/><br/>You are enough. You are wonderful. You are mine.</p>
+      <button class="popup-close" id="popupClose">Close 🌸</button>
+    </div>
+  </div>
+
+  <script>
+    // ---- Custom cursor ----
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+    });
+    document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+    document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
+
+    // ---- Burst hearts on click ----
+    document.addEventListener('click', e => {
+      const count = 7;
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.classList.add('burst-heart');
+        h.textContent = ['♥','💕','🌸','✨'][Math.floor(Math.random()*4)];
+        const angle = (360 / count) * i;
+        const dist = 60 + Math.random() * 60;
+        const rad = (angle * Math.PI) / 180;
+        h.style.left = e.clientX + 'px';
+        h.style.top  = e.clientY + 'px';
+        h.style.setProperty('--tx', Math.cos(rad) * dist + 'px');
+        h.style.setProperty('--ty', Math.sin(rad) * dist + 'px');
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 1300);
+      }
+    });
+
+    // ---- Ambient floating hearts ----
+    const ambient = document.getElementById('ambient');
+    const heartChars = ['♥','♡','🌸','✦','·'];
+
+    function spawnHeart() {
+      const h = document.createElement('div');
+      h.classList.add('ambient-heart');
+      h.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+      h.style.left = Math.random() * 100 + 'vw';
+      h.style.fontSize = (10 + Math.random() * 14) + 'px';
+      const dur = 6 + Math.random() * 7;
+      h.style.animationDuration = dur + 's';
+      h.style.animationDelay = Math.random() * 4 + 's';
+      ambient.appendChild(h);
+      setTimeout(() => h.remove(), (dur + 5) * 1000);
+    }
+
+    // Initial hearts
+    for (let i = 0; i < 12; i++) setTimeout(spawnHeart, i * 600);
+    // Continuous spawn
+    setInterval(spawnHeart, 1800);
+
+    // ---- Scroll reveal ----
+    const contents = document.querySelectorAll('.section-content');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), 200);
+        } else {
+          entry.target.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    contents.forEach(c => observer.observe(c));
+
+    // ---- Love button popup ----
+    const loveBtn    = document.getElementById('loveBtn');
+    const overlay    = document.getElementById('popupOverlay');
+    const closeBtn   = document.getElementById('popupClose');
+
+    loveBtn.addEventListener('click', () => overlay.classList.add('show'));
+    closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.remove('show');
+    });
+
+    // ---- Sparkles ----
+    function spawnSparkle() {
+      const s = document.createElement('div');
+      s.classList.add('sparkle');
+      s.textContent = '✦';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.top  = Math.random() * 100 + 'vh';
+      s.style.animationDelay = Math.random() * 3 + 's';
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 5000);
+    }
+    for (let i = 0; i < 8; i++) setTimeout(spawnSparkle, i * 700);
+    setInterval(spawnSparkle, 2500);
+  </script>
+</body>
+</html>
