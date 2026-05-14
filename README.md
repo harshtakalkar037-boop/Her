@@ -1,4 +1,4 @@
-# For You, Anju 🌸
+# For You, Anuu 🌸
 
 A personal love letter website — a little reminder of how loved you are.
 
